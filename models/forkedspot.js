@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var forkedspotSchema = mongoose.Schema({
+var forkedspotSchema = new Schema({
     sid: String,
     desc: String,
     guidepost: [{ key: String, desc: String, nextSpot: String, background: String }],

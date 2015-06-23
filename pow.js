@@ -73,7 +73,7 @@ switch(app.get('env')){
 // create "admin" subdomain...this should appear
 // before all your other routes
 var admin = express.Router();
-app.use(require('vhost')('admin.*', admin));
+app.use(require('vhost')('admin.pow.com', admin));
 // add admin routes
 require('./routes_admin.js')(admin);
 

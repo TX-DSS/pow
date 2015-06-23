@@ -25,18 +25,10 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div class="container">
-            {{#if flash}}
-                <div class="alert alert-dismissible alert-{{flash.type}}">
-                    <button type="button" class="close" 
-                        data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong>{{flash.intro}}</strong> {{{flash.message}}}
-                </div>
-            {{/if}}
-
             {{{body}}}
         </div> <!-- /container -->  
         <footer>
-            <p>&copy; PickOneWay 2014</p>
+            <p class="text-center">&copy; PickOneWay 2015</p>
         </footer>      
 
         {{#if showTests}}

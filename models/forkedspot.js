@@ -3,11 +3,14 @@ var Schema = mongoose.Schema;
 
 var forkedspotSchema = new Schema({
     sid: String,
-    desc: String,
-    guidepost: [{ key: String, desc: String, nextSpot: String, background: String }],
+    type: String,
+    summary: String,
+    description: String,
+    source: String,
+    language: String,
+    guidepost: [{ key: String, text: String, nextSpot: String, background: String }],
     nextSpot: String,
     feedback: Schema.Types.Mixed,
-    type: String,
     creator: String,
     createTime: Date,
     status: String

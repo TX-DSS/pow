@@ -1,6 +1,5 @@
 var http = require('http');
 var express = require('express');
-var Forkedspot = require('./models/forkedspot.js');
 
 var app = express();
 
@@ -72,10 +71,21 @@ switch(app.get('env')){
 
 // create "admin" subdomain...this should appear
 // before all your other routes
-var admin = express.Router();
-app.use(require('vhost')('admin.pow.com', admin));
+var vhost = require('vhost');
+var adminRouter = express.Router();
+app.use(vhost('admin.pow.com', adminRouter));
 // add admin routes
-require('./routes_admin.js')(admin);
+require('./routes_admin.js')(adminRouter);
+
+var rest = require('connect-rest');
+var apiOptions = {
+    context: '/',
+    domain: require('domain').create(),
+};
+var apiRouter = rest.rester(apiOptions);
+app.use(vhost('api.pow.com', require('cors')()));
+app.use(vhost('api.pow.com', apiRouter));
+require('./routes_api.js')(rest);
 
 // add routes
 require('./routes.js')(app);

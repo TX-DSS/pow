@@ -139,13 +139,13 @@ $(function(){
             guidepost: editor.getData()
         }
         console.log(spotData);
-        // $.ajax({
-        //     method: "POST",
-        //     url: "",
-        //     data: spotData
-        // }).done(function(msg) {
-        //     alert("Data Saved: " + msg);
-        // });
+        $.ajax({
+            method: "POST",
+            url: "http://api.pow.com:3000/spot",
+            data: spotData
+        }).done(function(msg) {
+            alert("Data Saved: " + msg);
+        });
     }
 
     $('#submitSpot').bind('click', submitSpot);

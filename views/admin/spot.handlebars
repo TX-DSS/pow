@@ -1,65 +1,87 @@
-<form class="form-horizontal">
-  <div class="form-group">
-    <label for="inputNo" class="col-sm-2 control-label">No.</label>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" id="inputNo" placeholder="" readonly>
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <!-- <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img alt="Brand" src="#">
+      </a>
+    </div> -->
+    <form class="navbar-form navbar-left" role="search">
+    <div class="input-group">
+      <input type="text" id="queryNo" class="form-control" placeholder="Search by No.">
+      <span class="input-group-btn">
+        <button class="btn btn-info" id="querySpot" type="button">Query</button>
+        <button class="btn btn-warning" id="newSpot" type="button">New</button>
+      </span>
     </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="inputType" class="col-sm-2 control-label">Spot Type</label>
-    <div class="col-sm-2">
-      <select class="form-control" id="inputType">
-        <option value="A0100">新闻资讯</option>
-        <option value="A0200">知识技巧</option>
-        <option value="A0300">你问我答</option>
-        <option value="A0400">观点言论</option>
-        <option value="A0500">故事短文</option>
-      </select>
+</nav>
+<div class="container">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label for="inputNo" class="col-sm-2 control-label">No.</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="inputNo" placeholder="" readonly>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="inputSummary" class="col-sm-2 control-label">Summary</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="inputSummary" placeholder="">
+    <div class="form-group">
+      <label for="inputType" class="col-sm-2 control-label">Spot Type</label>
+      <div class="col-sm-2">
+        <select class="form-control" id="inputType">
+          <option value="A0100">新闻资讯</option>
+          <option value="A0200">知识技巧</option>
+          <option value="A0300">你问我答</option>
+          <option value="A0400">观点言论</option>
+          <option value="A0500">故事短文</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="inputDescription" class="col-sm-2 control-label">Description</label>
-    <div class="col-sm-4">
-      <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+    <div class="form-group">
+      <label for="inputSummary" class="col-sm-2 control-label">Summary</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="inputSummary" placeholder="">
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="inputGuidepost" class="col-sm-2 control-label">Guidepost</label>
-    <div class="col-sm-4" id="inputGuidepost">
-      <!-- <div class="guidepostRow" rowindex="0">
-        <div class="input-group">
-          <span class="input-group-addon">A</span>
-          <input type="text" class="form-control" placeholder="" value="haha" readonly>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Save</button>
-            <button class="btn btn-danger" type="button">Del</button>
-          </span>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon">key</span>
-              <input type="text" name="key" class="form-control" placeholder="">
-            </div>
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon">text</span>
-              <input type="text" name="text" class="form-control" placeholder="">
+    <div class="form-group">
+      <label for="inputDescription" class="col-sm-2 control-label">Description</label>
+      <div class="col-sm-4">
+        <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputGuidepost" class="col-sm-2 control-label">Guidepost</label>
+      <div class="col-sm-4" id="inputGuidepost">
+        <!-- <div class="guidepostRow" rowindex="0">
+          <div class="input-group">
+            <span class="input-group-addon">A</span>
+            <input type="text" class="form-control" placeholder="" value="haha" readonly>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Save</button>
+              <button class="btn btn-danger" type="button">Del</button>
+            </span>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="input-group input-group-sm">
+                <span class="input-group-addon">key</span>
+                <input type="text" name="key" class="form-control" placeholder="">
+              </div>
+              <div class="input-group input-group-sm">
+                <span class="input-group-addon">text</span>
+                <input type="text" name="text" class="form-control" placeholder="">
+              </div>
             </div>
           </div>
-        </div>
-      </div> 
-      <button type="submit" class="btn btn-default">Add</button> -->
+        </div> 
+        <button type="submit" class="btn btn-default">Add</button> -->
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-sm-6 text-center">
+      <button type="button" id="createSpot" class="btn btn-warning">Create</button>
+      <button type="button" id="modifySpot" class="btn btn-info">Modify</button>
+      <button type="button" id="deleteSpot" class="btn btn-danger">Delete</button>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-4">
-      <button type="button" id="submitSpot" class="btn btn-default">Submit</button>
-    </div>
-  </div>
-</form>
+</div>

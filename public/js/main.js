@@ -124,14 +124,21 @@ var testGuidepost = [
     }
 ];
 
-
 $(function(){
     var editor = new GuidepostEditor({
         domId: 'inputGuidepost',
         data: testGuidepost
     });
 
-    function submitSpot() {
+    function loadSpotInfo(info) {
+        $('#inputNo').val(info.spotId);
+        $('#inputType').val(info.spotType);
+        $('#inputSummary').val(info.summary);
+        $('#inputDescription').val(info.description);
+        editor.setData(info.guidepost);
+    }
+
+    function createSpot() {
         var spotData = {
             type: $('#inputType').val(),
             summary: $('#inputSummary').val(),
@@ -141,12 +148,33 @@ $(function(){
         console.log(spotData);
         $.ajax({
             method: "POST",
-            url: "http://api.pow.com:3000/spot",
+            url: "http://api.pow.com:3000/spot/add",
             data: spotData
         }).done(function(msg) {
-            alert("Data Saved: " + msg);
+            console.log(msg);
+            alert("Created");
         });
     }
 
-    $('#submitSpot').bind('click', submitSpot);
+    function querySpot() {
+        var id = $('#queryNo').val();
+        $.ajax({
+            method: "GET",
+            url: "http://api.pow.com:3000/spot/"+id
+        }).done(function(msg) {
+            console.log(msg);
+            if ( msg.isSuccess ) {
+                var rest = msg.result;
+                if ( !!rest && rest.length == 1 ) {
+                    loadSpotInfo(rest[0]);
+                }
+            } else {
+                // err
+            }
+        });
+
+    }
+
+    $('#createSpot').bind('click', createSpot);
+    $('#querySpot').bind('click', querySpot);
 });

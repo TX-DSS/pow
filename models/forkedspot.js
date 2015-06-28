@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
+
+autoIncrement.initialize(mongoose);
 
 var forkedspotSchema = new Schema({
-    sid: String,
-    type: String,
+    spotId: { type: String, index: true, unique: true },
+    spotType: { type: String, index: true },
     summary: String,
     description: String,
     source: String,
@@ -15,6 +18,13 @@ var forkedspotSchema = new Schema({
     createTime: Date,
     status: String
 });
+forkedspotSchema.plugin(autoIncrement.plugin, {
+    model: 'Forkedspot',
+    field: 'spotId',
+    startAt: 10000,
+    incrementBy: 1
+});
+
 var Forkedspot = mongoose.model('Forkedspot', forkedspotSchema);
 module.exports = Forkedspot;
 

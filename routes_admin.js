@@ -1,5 +1,6 @@
 
 var admin = require('./handlers/admin.js');
+var api = require('./handlers/api.js');
 
 module.exports = function(app){
 

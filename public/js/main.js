@@ -110,6 +110,37 @@
         }
     }
 
+    var SpotEditor = Class.create();
+    SpotEditor.prototype = {
+        initialize: function(options) {
+            this.SetOptions(options);
+            this.Container = $('#'+this.options.domId)[0];
+        },
+        SetOptions: function(options) {
+            this.options = {
+                domId: '',
+                mode: 'edit',
+                spotTypeOpts: {
+                    "A0100": {
+                        name: "新闻资讯",
+                        defaultGP: [
+                            {
+                                key: "",
+                                text: "赞"
+                            }
+                        ]
+                    },
+                    "A0200": "知识技巧",
+                    "A0300": "观点言论",
+                    "A0400": "故事短文",
+                    "A0500": "你问我答"
+                },
+                data: []
+            };
+            $.extend(this.options, options || {});
+        }
+    }
+
     exports.GuidepostEditor = GuidepostEditor;
 
 })(window);
@@ -152,8 +183,19 @@ $(function(){
             data: spotData
         }).done(function(msg) {
             console.log(msg);
+            if ( msg.isSuccess ) {
+                $('#')
+            }
             alert("Created");
         });
+    }
+
+    function modifySpot() {
+
+    }
+
+    function deleteSpot() {
+        
     }
 
     function querySpot() {
@@ -166,6 +208,7 @@ $(function(){
             if ( msg.isSuccess ) {
                 var rest = msg.result;
                 if ( !!rest && rest.length == 1 ) {
+                    $('#createSpot').attr('disabled', 'disabled');
                     loadSpotInfo(rest[0]);
                 }
             } else {
@@ -175,6 +218,17 @@ $(function(){
 
     }
 
-    $('#createSpot').bind('click', createSpot);
-    $('#querySpot').bind('click', querySpot);
+    function initSpot() {
+        $('#inputNo').val('');
+        $('#inputType').val('');
+        $('#inputSummary').val('');
+        $('#inputDescription').val('');
+    }
+
+    $('#querySpotBtn').bind('click', querySpot);
+    $('#newSpotBtn').bind('click', initSpot);
+    $('#createSpotBtn').bind('click', createSpot);
+    $('#modifySpotBtn').bind('click', modifySpot);
+    $('#deleteSpotBtn').bind('click', deleteSpot);
+
 });

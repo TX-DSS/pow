@@ -115,6 +115,10 @@
         initialize: function(options) {
             this.SetOptions(options);
             this.Container = $('#'+this.options.domId)[0];
+            this.guidepostEditor = new GuidepostEditor({
+                domId: 'inputGuidepost',
+                data: []
+            });
         },
         SetOptions: function(options) {
             this.options = {
@@ -138,44 +142,47 @@
                 data: []
             };
             $.extend(this.options, options || {});
+        },
+        initSpotInfo: function() {
+            $('#inputNo').val('');
+            $('#inputType').val('A0100');
+            $('#inputSummary').val('');
+            $('#inputDescription').val('');
+            this.guidepostEditor.setData([]);
+        },
+        setSpotInfo: function(info) {
+            $('#inputNo').val(info.spotId);
+            $('#inputType').val(info.spotType);
+            $('#inputSummary').val(info.summary);
+            $('#inputDescription').val(info.description);
+            this.guidepostEditor.setData(info.guidepost);
+        },
+        getSpotInfo: function() {
+            var info = {
+                spotId: $('#inputNo').val(),
+                type: $('#inputType').val(),
+                summary: $('#inputSummary').val(),
+                description: $('#inputDescription').val(),
+                guidepost: this.guidepostEditor.getData()
+            }
+            return info;
+        },
+        setEditMode: function(mode) {
+
         }
     }
 
-    exports.GuidepostEditor = GuidepostEditor;
+    exports.SpotEditor = SpotEditor;
 
 })(window);
 
-var testGuidepost = [
-    {
-        key: "A",
-        text: "支持"
-    }, {
-        key: "B",
-        text: "反对"
-    }
-];
-
 $(function(){
-    var editor = new GuidepostEditor({
-        domId: 'inputGuidepost',
-        data: testGuidepost
+    var editor = new SpotEditor({
+        domId: 'spotEditorContainer'
     });
 
-    function loadSpotInfo(info) {
-        $('#inputNo').val(info.spotId);
-        $('#inputType').val(info.spotType);
-        $('#inputSummary').val(info.summary);
-        $('#inputDescription').val(info.description);
-        editor.setData(info.guidepost);
-    }
-
     function createSpot() {
-        var spotData = {
-            type: $('#inputType').val(),
-            summary: $('#inputSummary').val(),
-            description: $('#inputDescription').val(),
-            guidepost: editor.getData()
-        }
+        var spotData = editor.getSpotInfo();
         console.log(spotData);
         $.ajax({
             method: "POST",
@@ -184,7 +191,8 @@ $(function(){
         }).done(function(msg) {
             console.log(msg);
             if ( msg.isSuccess ) {
-                $('#')
+                $('#queryNo').val(msg.result.spotId);
+                $('#querySpotBtn').click();
             }
             alert("Created");
         });
@@ -209,7 +217,9 @@ $(function(){
                 var rest = msg.result;
                 if ( !!rest && rest.length == 1 ) {
                     $('#createSpot').attr('disabled', 'disabled');
-                    loadSpotInfo(rest[0]);
+                    editor.setSpotInfo(rest[0]);
+                } else {
+                    alert('No Data');
                 }
             } else {
                 // err
@@ -219,10 +229,7 @@ $(function(){
     }
 
     function initSpot() {
-        $('#inputNo').val('');
-        $('#inputType').val('');
-        $('#inputSummary').val('');
-        $('#inputDescription').val('');
+        editor.initSpotInfo();
     }
 
     $('#querySpotBtn').bind('click', querySpot);

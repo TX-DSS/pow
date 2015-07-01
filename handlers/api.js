@@ -2,10 +2,17 @@
 
 var Forkedspot = require('../models/forkedspot.js');
 
-exports.addSpot = function(req, res, next){
+function handleError(err, res) {
+    res.json({
+        isSuccess: false,
+        err: err
+    });
+}
+
+exports.createSpot = function(req, res, next){
     // console.log(req);
     var newSpot = new Forkedspot({
-        spotType: req.body.type,
+        spotType: req.body.spotType,
         summary: req.body.summary,
         description: req.body.description,
         guidepost: req.body.guidepost,
@@ -13,13 +20,7 @@ exports.addSpot = function(req, res, next){
         createTime: new Date()
     });
     newSpot.save(function(err, result){
-        if(err) {
-            //console.log(err);
-            res.json({
-                isSuccess: false,
-                err: err
-            });
-        }
+        if(err) handleError(err, res);
         res.json({
             isSuccess: true,
             result: {
@@ -33,6 +34,28 @@ exports.deleteSpot = function(req, res, next){
     
 };
 exports.updateSpot = function(req, res, next){
+    var id = req.body._id;
+    if (!!id) {
+        Forkedspot.findById(id, function(err, spot) {
+            if(err) handleError(err, res);
+
+            spot.spotType = req.body.spotType;
+            spot.summary = req.body.summary;
+            spot.description = req.body.description;
+            spot.guidepost = req.body.guidepost;
+            spot.updateTime = new Date();
+            spot.save(function(err, result) {
+                if (err) return handleError(err);
+                res.json({
+                    isSuccess: true,
+                    result: {
+                        spotId: result.spotId
+                    }
+                });
+            });
+        });
+    }
+
     
 };
 exports.querySpot = function(req, res, next){

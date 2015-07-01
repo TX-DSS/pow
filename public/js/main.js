@@ -144,6 +144,7 @@
             $.extend(this.options, options || {});
         },
         initSpotInfo: function() {
+            this.spotInfo = {};
             $('#inputNo').val('');
             $('#inputType').val('A0100');
             $('#inputSummary').val('');
@@ -151,6 +152,7 @@
             this.guidepostEditor.setData([]);
         },
         setSpotInfo: function(info) {
+            this.spotInfo = info;
             $('#inputNo').val(info.spotId);
             $('#inputType').val(info.spotType);
             $('#inputSummary').val(info.summary);
@@ -160,12 +162,12 @@
         getSpotInfo: function() {
             var info = {
                 spotId: $('#inputNo').val(),
-                type: $('#inputType').val(),
+                spotType: $('#inputType').val(),
                 summary: $('#inputSummary').val(),
                 description: $('#inputDescription').val(),
                 guidepost: this.guidepostEditor.getData()
             }
-            return info;
+            return $.extend(this.spotInfo, info);
         },
         setEditMode: function(mode) {
 
@@ -186,19 +188,35 @@ $(function(){
         console.log(spotData);
         $.ajax({
             method: "POST",
-            url: "http://api.pow.com:3000/spot/add",
+            url: "http://api.pow.com:3000/spot/create",
             data: spotData
         }).done(function(msg) {
             console.log(msg);
-            if ( msg.isSuccess ) {
-                $('#queryNo').val(msg.result.spotId);
-                $('#querySpotBtn').click();
-            }
+
+            if ( !msg.isSuccess ) return;
+
+            $('#queryNo').val(msg.result.spotId);
+            $('#querySpotBtn').click();
             alert("Created");
         });
     }
 
     function modifySpot() {
+        var spotData = editor.getSpotInfo();
+        console.log(spotData);
+        $.ajax({
+            method: "POST",
+            url: "http://api.pow.com:3000/spot/update",
+            data: spotData
+        }).done(function(msg) {
+            console.log(msg);
+            
+            if ( !msg.isSuccess ) return;
+
+            $('#queryNo').val(msg.result.spotId);
+            $('#querySpotBtn').click();
+            alert("Modified");
+        });
 
     }
 
@@ -208,21 +226,21 @@ $(function(){
 
     function querySpot() {
         var id = $('#queryNo').val();
+        if ( !id ) return;
         $.ajax({
             method: "GET",
             url: "http://api.pow.com:3000/spot/"+id
         }).done(function(msg) {
             console.log(msg);
-            if ( msg.isSuccess ) {
-                var rest = msg.result;
-                if ( !!rest && rest.length == 1 ) {
-                    $('#createSpot').attr('disabled', 'disabled');
-                    editor.setSpotInfo(rest[0]);
-                } else {
-                    alert('No Data');
-                }
+
+            if ( !msg.isSuccess ) return;
+
+            var rest = msg.result;
+            if ( !!rest && rest.length == 1 ) {
+                $('#createSpot').attr('disabled', 'disabled');
+                editor.setSpotInfo(rest[0]);
             } else {
-                // err
+                alert('No Data');
             }
         });
 

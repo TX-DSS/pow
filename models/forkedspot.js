@@ -16,6 +16,7 @@ var forkedspotSchema = new Schema({
     feedback: Schema.Types.Mixed,
     creator: String,
     createTime: Date,
+    updateTime: Date,
     status: String
 });
 forkedspotSchema.plugin(autoIncrement.plugin, {

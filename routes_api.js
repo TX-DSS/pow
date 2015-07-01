@@ -12,9 +12,9 @@ var corsOptions = {
 module.exports = function(app) {
 
     // api routes
-    app.post('/spot/add', cors(corsOptions), api.addSpot);
-    app.post('/spot/delete', api.deleteSpot);
-    app.post('/spot/update', api.updateSpot);
+    app.post('/spot/create', cors(corsOptions), api.createSpot);
+    app.post('/spot/delete', cors(corsOptions), api.deleteSpot);
+    app.post('/spot/update', cors(corsOptions), api.updateSpot);
     app.get('/spot/:spotId', cors(), api.querySpot);
 
 };

@@ -31,11 +31,26 @@ exports.createSpot = function(req, res, next){
 };
 
 exports.deleteSpot = function(req, res, next){
-    
+    var id = req.body._id;
+    if (id) {
+        Forkedspot.findById(id, function(err, spot) {
+            if(err) handleError(err, res);
+
+            spot.remove(function(err, result) {
+                if (err) return handleError(err);
+                res.json({
+                    isSuccess: true,
+                    result: {
+                        spotId: result.spotId
+                    }
+                });
+            });
+        });
+    }
 };
 exports.updateSpot = function(req, res, next){
     var id = req.body._id;
-    if (!!id) {
+    if (id) {
         Forkedspot.findById(id, function(err, spot) {
             if(err) handleError(err, res);
 

@@ -29,7 +29,6 @@ app.set('view engine', 'handlebars');
 // app.use(bundler);
 
 app.set('port', process.env.PORT || 3000);
-app.set('topdomain', 'pow.com');
 
 
 // logging
@@ -41,7 +40,6 @@ switch(app.get('env')){
     case 'production':
         // module 'express-logger' supports daily log rotation
         app.use(require('express-logger')({ path: __dirname + '/log/requests.log'}));
-        app.set('topdomain', 'pickoneway.com');
         break;
 }
 
@@ -75,7 +73,7 @@ switch(app.get('env')){
 // before all your other routes
 var vhost = require('vhost');
 var adminRouter = express.Router();
-app.use(vhost('admin.'+app.get('topdomain'), adminRouter));
+app.use(vhost('admin.'+credentials.topdomain, adminRouter));
 // add admin routes
 require('./routes_admin.js')(adminRouter);
 
@@ -86,8 +84,7 @@ require('./routes_admin.js')(adminRouter);
 // };
 // var apiRouter = rest.rester(apiOptions);
 var apiRouter = express.Router();
-//app.use(vhost('api.'+app.get('topdomain'), require('cors')()));
-app.use(vhost('api.'+app.get('topdomain'), apiRouter));
+app.use(vhost('api.'+credentials.topdomain, apiRouter));
 require('./routes_api.js')(apiRouter);
 // require('./routes_api.js')(rest);
 

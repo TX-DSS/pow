@@ -29,22 +29,28 @@ app.set('view engine', 'handlebars');
 // app.use(bundler);
 
 app.set('port', process.env.PORT || 3000);
+var mongodbConStr = '';
 
 
+console.log(app.get('env'));
 // logging
 switch(app.get('env')){
     case 'development':
         // compact, colorful dev logging
         app.use(require('morgan')('dev'));
+        mongodbConStr = credentials.mongo.development.connectionString;
         break;
     case 'production':
         // module 'express-logger' supports daily log rotation
         app.use(require('express-logger')({ path: __dirname + '/log/requests.log'}));
+        mongodbConStr = credentials.mongo.production.connectionString;
         break;
+    default:
+        throw new Error('Unknown execution environment: ' + app.get('env'));
 }
 
 var MongoSessionStore = require('session-mongoose')(require('connect'));
-var sessionStore = new MongoSessionStore({ url: credentials.mongo.development.connectionString });
+var sessionStore = new MongoSessionStore({ url: mongodbConStr });
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')({ store: sessionStore }));
@@ -58,16 +64,7 @@ var options = {
        socketOptions: { keepAlive: 1 } 
     }
 };
-switch(app.get('env')){
-    case 'development':
-        mongoose.connect(credentials.mongo.development.connectionString, options);
-        break;
-    case 'production':
-        mongoose.connect(credentials.mongo.production.connectionString, options);
-        break;
-    default:
-        throw new Error('Unknown execution environment: ' + app.get('env'));
-}
+mongoose.connect(mongodbConStr, options);
 
 // create "admin" subdomain...this should appear
 // before all your other routes

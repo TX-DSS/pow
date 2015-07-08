@@ -35,6 +35,7 @@
     "mongoose-auto-increment": "^4.0.0",
     "morgan": "^1.1.1",
     "nodemailer": "^0.6.5",
+    "phantomjs": "^1.9.17",
     "q": "^1.0.1",
     "session-mongoose": "^0.4.1",
     "underscore": "^1.6.0",

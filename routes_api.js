@@ -16,5 +16,6 @@ module.exports = function(app) {
     app.post('/spot/delete', cors(corsOptions), api.deleteSpot);
     app.post('/spot/update', cors(corsOptions), api.updateSpot);
     app.get('/spot/:spotId', cors(), api.querySpot);
-
+    
+    //app.get('/checkSignature', cors(), api.checkSignature);
 };

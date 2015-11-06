@@ -9,9 +9,9 @@
                     "key": "V1001"
                 }, 
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "办事指南", 
-                    "key": "V1002"
+                    "url": "http://120.25.240.240/page/webapp.html?app=guide"
                 }, 
                 {
                     "type": "click", 
@@ -19,28 +19,28 @@
                     "key": "V1003"
                 }, 
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "会议室预定", 
-                    "key": "V1004"
+                    "url": "http://120.25.240.240/page/webapp.html?app=reserve"
                 }, 
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "设备申请", 
-                    "key": "V1005"
+                    "url": "http://120.25.240.240/page/webapp.html?app=apply"
                 }
             ]
         }, {
             "name": "学习", 
             "sub_button": [
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "阅览室书目查询", 
-                    "key": "V2001"
+                    "url": "http://120.25.240.240/page/webapp.html?app=read"
                 }, 
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "知识库", 
-                    "key": "V2002"
+                    "url": "http://120.25.240.240/page/webapp.html?app=learn"
                 }, 
                 {
                     "type": "click", 
@@ -57,19 +57,24 @@
                     "key": "V3001"
                 }, 
                 {
-                    "type": "click", 
+                    "type": "view", 
                     "name": "活动场地预定", 
-                    "key": "V3002"
+                    "url": "http://120.25.240.240/page/webapp.html?app=play"
                 }, 
                 {
                     "type": "click", 
-                    "name": "兴趣小组活动", 
+                    "name": "本周兴趣小组活动", 
                     "key": "V3003"
                 }, 
                 {
                     "type": "click", 
                     "name": "近期园区活动", 
                     "key": "V3004"
+                }, 
+                {
+                    "type": "pic_photo_or_album", 
+                    "name": "上传园区美景", 
+                    "key": "V3005"
                 }
             ]
         }

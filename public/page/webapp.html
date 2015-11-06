@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+<title>webapp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../vendor/js/jquery-2.1.1.min.js"></script>
+<script>
+function getParam(paramName) {
+    paramValue = "";
+    isFound = false;
+    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&");
+        i = 0;
+        while (i < arrSource.length && !isFound) {
+            if (arrSource[i].indexOf("=") > 0) {
+                if (arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase()) {
+                    paramValue = arrSource[i].split("=")[1];
+                    isFound = true;
+                }
+            }
+            i++;
+        }
+    }
+    return paramValue;
+}
+
+function init() {
+    var app = getParam("app");
+    var appName = "";
+    switch (app) {
+        case 'guide':
+            appName = "办事指南";
+            break;
+        case 'reserve':
+            appName = "会议室预定";
+            break;
+        case 'apply':
+            appName = "设备申请";
+            break;
+        case 'read':
+            appName = "阅览室";
+            break;
+        case 'learn':
+            appName = "知识库";
+            break;
+        case 'play':
+            appName = "活动场地预定";
+            break;
+    }
+    $("#appName").html(appName);
+}
+</script>
+</head>
+
+<body onload="init();">
+    <h1>HTML5应用 -
+        <span id="appName"></span>
+    </h1>
+</body>
+</html>

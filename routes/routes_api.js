@@ -1,4 +1,4 @@
-var api = require('./handlers/api.js');
+var api = require('../handlers/api.js');
 var cors = require('cors');
 
 var whitelist = ['http://pow.com:3000', 'http://admin.pow.com:3000'];

@@ -18,7 +18,7 @@
                     "name": "联系方式查询", 
                     "key": "V1003"
                 }, 
-                {
+                { 
                     "type": "view", 
                     "name": "会议室预定", 
                     "url": "http://120.25.240.240/page/webapp.html?app=reserve"

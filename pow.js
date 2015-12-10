@@ -72,7 +72,7 @@ var vhost = require('vhost');
 var adminRouter = express.Router();
 app.use(vhost('admin.'+credentials.topdomain, adminRouter));
 // add admin routes
-require('./routes_admin.js')(adminRouter);
+require('./routes/routes_admin.js')(adminRouter);
 
 // var rest = require('connect-rest');
 // var apiOptions = {
@@ -82,11 +82,11 @@ require('./routes_admin.js')(adminRouter);
 // var apiRouter = rest.rester(apiOptions);
 var apiRouter = express.Router();
 app.use(vhost('api.'+credentials.topdomain, apiRouter));
-require('./routes_api.js')(apiRouter);
+require('./routes/routes_api.js')(apiRouter);
 // require('./routes_api.js')(rest);
 
 // add routes
-require('./routes.js')(app);
+require('./routes/routes.js')(app);
 
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next){

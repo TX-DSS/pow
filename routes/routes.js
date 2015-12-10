@@ -1,5 +1,5 @@
 
-var main = require('./handlers/main.js');
+var main = require('../handlers/main.js');
 var cors = require('cors');
 
 module.exports = function(app){

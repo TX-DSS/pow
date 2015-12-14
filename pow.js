@@ -55,6 +55,7 @@ var sessionStore = new MongoSessionStore({ url: mongodbConStr });
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')({ store: sessionStore }));
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/webapps'));
 app.use(require('body-parser')());
 
 // database configuration

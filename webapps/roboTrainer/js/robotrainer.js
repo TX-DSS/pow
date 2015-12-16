@@ -18,12 +18,11 @@
         Init: function() {
             this.AppHeaderDom = $("#appHeader");
             this.AppLeftDom = $("#appLeft");
-            this.TrainBtn = $("#trainBtn");
 
             this.AppLeftDom.bind("click", Bind(this, this.HandleAppLeftClick));
             this.AppLeftDom.bind("dblclick", Bind(this, this.HandleAppLeftDblclick));
 
-            this.TrainBtn.bind("click", Bind(this, this.addSiteByInput));
+            $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddLinkList));
         },
         HandleAppLeftClick: function(e) {
             var target = e.target;
@@ -48,26 +47,37 @@
             var url =  li.getAttribute("linkurl");
             this.openLink(url);
         },
-        addLinkList: function(list) {
-            var siteUrl = $("#siteForTrain").val();
-            if ( !siteUrl ) return;
+        AnalyseAndAddLinkList: function() {
+            var url = $("#pageUrlInput").val();
+            var tar = $("#targetLinkArea").val();
 
-            $.ajax({
-                method: "POST",
-                url: "http://admin.pow.com:3000/func",
-                data: {
-                    opt: "analyseSite",
-                    siteUrl: siteUrl
-                }
-            }).done(function(msg) {
-                console.log(msg);
+            var app = this;
 
-                if ( !msg.isSuccess ) {
-                    handleError(msg);
+            var handleAjaxSucc = function(data) {
+                console.log(data);
+
+                if ( !data.isSuccess ) {
+                    //handleError(data);
                     return;
                 }
 
-            });
+                app.addLinkList(data.msg.linkList);
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "http://robot.pow.com:3000",
+                data: {
+                    opt: "analyseLinkArea",
+                    msg: {
+                        siteURL: url,
+                        targetArea: tar
+                    }
+                }
+            }).done(handleAjaxSucc);
+        },
+        addLinkList: function(list) {
+            console.log(list);
 
         },
         openLink: function(url) {

@@ -1,16 +1,18 @@
+
 var api = require('../handlers/api.js');
 var cors = require('cors');
 
-var whitelist = ['http://pow.com:3000', 'http://admin.pow.com:3000'];
-var corsOptions = {
-    origin: function(origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-        callback(null, originIsWhitelisted);
-    }
-};
 
-module.exports = function(app) {
+module.exports = function(app, credentials) {
 
+    var whitelist = ['http://'+credentials.topdomain+':'+credentials.port, 'http://admin.'+credentials.topdomain+':'+credentials.port];
+    var corsOptions = {
+        origin: function(origin, callback) {
+            var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+            callback(null, originIsWhitelisted);
+        }
+    };
+    
     // api routes
     app.post('/spot/create', cors(corsOptions), api.createSpot);
     app.post('/spot/delete', cors(corsOptions), api.deleteSpot);

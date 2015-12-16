@@ -1,7 +1,6 @@
 //var fortune = require('../lib/fortune.js');
 var _ = require('lodash');
 var crypto = require('crypto');
-var credentials = require('../credentials.js');
 var wxrobot = require('../lib/wxrobot.js');
 
 function sha1(str) {

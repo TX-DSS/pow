@@ -3,9 +3,7 @@ var express = require('express');
 
 var app = express();
 
-var credentials = require('./credentials.js');
 
-var emailService = require('./lib/email.js')(credentials);
 
 // set up handlebars view engine
 var handlebars = require('express3-handlebars').create({
@@ -28,29 +26,30 @@ app.set('view engine', 'handlebars');
 // var bundler = require('connect-bundle')(require('./config.js'));
 // app.use(bundler);
 
-app.set('port', process.env.PORT || 3000);
-var mongodbConStr = '';
-
-
+var credentials = null;
 console.log(app.get('env'));
 // logging
 switch(app.get('env')){
     case 'development':
         // compact, colorful dev logging
         app.use(require('morgan')('dev'));
-        mongodbConStr = credentials.mongo.development.connectionString;
+        credentials = require('./credentials.development.js');
         break;
     case 'production':
         // module 'express-logger' supports daily log rotation
         app.use(require('express-logger')({ path: __dirname + '/log/requests.log'}));
-        mongodbConStr = credentials.mongo.production.connectionString;
+        credentials = require('./credentials.production.js');
         break;
     default:
         throw new Error('Unknown execution environment: ' + app.get('env'));
 }
 
+app.set('port', process.env.PORT || credentials.port);
+
+var emailService = require('./lib/email.js')(credentials);
+
 var MongoSessionStore = require('session-mongoose')(require('connect'));
-var sessionStore = new MongoSessionStore({ url: mongodbConStr });
+var sessionStore = new MongoSessionStore({ url: credentials.mongo.connectionString });
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')({ store: sessionStore }));
@@ -65,28 +64,34 @@ var options = {
        socketOptions: { keepAlive: 1 } 
     }
 };
-mongoose.connect(mongodbConStr, options);
+mongoose.connect(credentials.mongo.connectionString, options);
 
+
+var vhost = require('vhost');
 // create "admin" subdomain...this should appear
 // before all your other routes
-var vhost = require('vhost');
 var adminRouter = express.Router();
 app.use(vhost('admin.'+credentials.topdomain, adminRouter));
-// add admin routes
 require('./routes/routes_admin.js')(adminRouter);
 
+// add robot routes
+var robotRouter = express.Router();
+app.use(vhost('robot.'+credentials.topdomain, robotRouter));
+require('./routes/routes_robot.js')(robotRouter, credentials);
+
+// add api routes
+var apiRouter = express.Router();
+app.use(vhost('api.'+credentials.topdomain, apiRouter));
+require('./routes/routes_api.js')(apiRouter, credentials);
 // var rest = require('connect-rest');
 // var apiOptions = {
 //     context: '/',
 //     domain: require('domain').create(),
 // };
 // var apiRouter = rest.rester(apiOptions);
-var apiRouter = express.Router();
-app.use(vhost('api.'+credentials.topdomain, apiRouter));
-require('./routes/routes_api.js')(apiRouter);
 // require('./routes_api.js')(rest);
 
-// add routes
+// add www routes
 require('./routes/routes.js')(app);
 
 // 404 catch-all handler (middleware)

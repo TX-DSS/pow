@@ -1,7 +1,6 @@
 
 var _ = require('lodash');
 var crypto = require('crypto');
-var credentials = require('../credentials.js');
 var Forkedspot = require('../models/forkedspot.js');
 
 function handleError(err, res) {

@@ -90,20 +90,21 @@ i.xmlFile {
 	width: 240px;
 	bottom: 0;
 	height: auto;
+	border-right: 1px solid #D0D0D0;
 }
 #pageAddress {
 	position: absolute;
 	top: 48px;
 	left: 240px;
+	right: 280px;
 	height:34px;
-	width: 800px;
 }
 #pageFrame {
 	position: absolute;
 	top: 82px;
 	left: 240px;
+	right: 280px;
 	bottom: 0;
-	width: 800px;
 	height: auto;
 	background-color: #F0F0F0;
 	z-index: 98;
@@ -116,11 +117,11 @@ i.xmlFile {
 #defineInputs {
 	position: absolute;
 	top: 48px;
-	left: 1040px;
 	bottom: 0;
 	right: 0;
+	width: 280px;
 	padding: 12px;
-	border: 1px solid #D0D0D0;
+	border-left: 1px solid #D0D0D0;
 	cursor: default;
 	overflow: hidden;
 	background-color: #F0F0F0;

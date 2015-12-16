@@ -1,11 +1,3 @@
-body,ul,li,ol,h1,h2,input,select,textarea {
-	padding: 0;
-	margin: 0;
-}
-ul,li,ol {
-	list-style: none;
-    outline: none;
-}
 body {
 	-moz-user-select:none;
     -webkit-user-select:none;
@@ -13,19 +5,6 @@ body {
     overflow: hidden;
     font-family: 'Microsoft Yahei', Arial, sans-serif;
     color: #303030;
-}
-input,select,textarea {
-	font-family: 'Microsoft Yahei', Arial, sans-serif;
-    color: #000000;
-    outline: none;
-}
-textarea {
-	resize: none;
-	overflow: auto;
-}
-input {
-	height: 18px;
-	vertical-align: middle;
 }
 .notAllowedCursor {
 	cursor: not-allowed;
@@ -93,10 +72,16 @@ i.xmlFile {
 	border-bottom: 1px solid #D0D0D0;
 	z-index: 99;
 }
-.appLogo {
+#appHeader .appLogo {
 	height: 48px;
 	width: 200px;
+	display: inline-block;
 	background: url("../img/img_packed.png") 0 0;
+}
+#appHeader .scanBar {
+	padding: 7px 0;
+	width: 420px;
+	display: inline-block;
 }
 #appLeft {
 	position: absolute;
@@ -106,9 +91,16 @@ i.xmlFile {
 	bottom: 0;
 	height: auto;
 }
-#pageFrame {
+#pageAddress {
 	position: absolute;
 	top: 48px;
+	left: 240px;
+	height:34px;
+	width: 800px;
+}
+#pageFrame {
+	position: absolute;
+	top: 82px;
 	left: 240px;
 	bottom: 0;
 	width: 800px;
@@ -121,214 +113,15 @@ i.xmlFile {
 	height: 100%;
 	width: 100%;
 }
-#templateEditor {
+#defineInputs {
 	position: absolute;
 	top: 48px;
 	left: 1040px;
 	bottom: 0;
 	right: 0;
+	padding: 12px;
 	border: 1px solid #D0D0D0;
 	cursor: default;
 	overflow: hidden;
 	background-color: #F0F0F0;
-}
-i.close:hover {
-	background-position: -64px 16px!important;
-}
-.svg-background {
-	background-image: url("../img/svg_bg.png");
-}
-.contextMenu {
-	position: absolute;
-	z-index: 99;
-	1top: 80px;
-	1left: 710px;
-	background-color: #FFFFFF;
-	border: 1px solid #C0C0C0;
-	min-width: 100px;
-	padding: 2px 0;
-}
-.contextMenu ul li {
-	font-size: 12px;
-	line-height: 24px;
-	padding-left: 26px;
-	padding-right: 46px;
-	cursor: default;
-}
-.contextMenu ul li:hover {
-	background-color: #0078FF;
-	color: #FFFFFF;
-}
-.contextMenu .sepLine {
-	height: 0;
-	border-bottom: 1px solid #E0E0E0;
-	margin:2px 0;
-}
-
-.modalDialog {
-	position: absolute;
-	z-index: 998;
-	width: 100%;
-	height: 100%;
-}
-.modalDialog .modalBackground {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	opacity: 0.25;
-	-moz-opacity: 0.25;
-	filter:alpha(opacity=25);
-    background-color:#000000;
-}
-.modalDialog .dialogBox {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	background-color: #FFFFFF;
-	border-top: 4px solid #0078FF;
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
-	border-radius: 4px;
-}
-.dialogBox .title {
-	height: 12px;
-	line-height: 12px;
-	padding: 8px 12px 10px 12px;
-	font-size: 14px;
-	1font-weight: bold;
-	1background-color: #F0F0F0;
-	1color: #FFFFFF;
-}
-.dialogBox .content {
-	1height: 40px;
-	padding: 12px;
-}
-.leftTab {
-	width: 120px;
-	font-size: 14px;
-	float: left;
-}
-.leftTab .active {
-	border-left: 4px solid #808080;
-	color: #303030!important;
-	padding-left: 8px;
-	margin-left: -12px;
-}
-.leftTab ul li {
-	height: 22px;
-	line-height: 22px;
-	cursor: default;
-	color: #808080;
-	margin-bottom: 8px;
-}
-.tabContent {
-	width: 320px;
-	float: left;
-	line-height: 22px;
-}
-.inputList input[type="text"] {
-	width: 180px;
-	border: 1px solid #A0A0A0;
-	padding: 3px;
-}
-.inputList select {
-	border: 1px solid #A0A0A0;
-	padding: 3px;
-}
-.inputList textarea {
-	padding: 3px;
-	width: 180px;
-	border: 1px solid #A0A0A0;
-	height: 66px;
-}
-.inputList>li {
-	line-height: 24px;
-	margin-bottom: 6px;
-	vertical-align: middle;
-	display: inline-block;
-	height: auto;
-	width: auto;
-	1clear: both;
-}
-.inputList>li label {
-	display: inline;
-	width: 98px;
-	text-align: right;
-	font-size: 12px;
-	1vertical-align: middle;
-	padding-right:8px;
-    float: left;
-}
-.dialogBox .bottom {
-	clear: both;
-	padding: 8px 12px 10px 12px;
-	height: 22px;
-	text-align: right;
-	background-color: #F5F5F5;
-	border-top: 1px solid #E0E0E0;
-	border-radius: 0 0 4px 4px;
-}
-.btn {
-	font-size: 14px;
-	line-height: 14px;
-	padding: 4px 12px 6px 12px;
-	border: 1px solid #C0C0C0;
-	cursor: default;
-	color: #505050;
-	background-color: #F0F0F0;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
-.btn:hover {
-	border: 1px solid #B0B0B0;
-	background-color: #E0E0E0;
-	color: #202020;
-}
-.btn:active {
-	border: 1px solid #A0A0A0;
-	background-color: #D8D8D8;
-	box-shadow: none;
-}
-.dialogBox .bottom .btn {
-	display: inline-block;
-	margin-left: 8px;
-}
-
-.inputSelect {
-	position: absolute;
-	font-size: 12px;
-	background-color: #FFFFFF;
-	width: 186px;
-	left:240px;
-	top:134px;
-	border: 1px solid #A0A0A0;
-}
-.multiSelectInput {
-	background: url("../img/arrow_down.png") no-repeat center right;
-}
-.multiSelectBox {
-	position: absolute;
-	font-size: 12px;
-	background-color: #FFFFFF;
-	1width: 186px;
-	1left:240px;
-	1top:134px;
-	border: 1px solid #A0A0A0;
-	line-height: 28px;
-}
-.multiSelectBox ul li {
-	padding: 0 6px;
-	vertical-align: middle;
-	cursor: default;
-}
-.multiSelectBox ul li input[type="checkbox"] {
-	margin-right: 4px;
-}
-.multiSelectBox ul li:hover {
-	background-color: #E0E0E0;
-}
-.multiSelectBox .selected {
-	background-color: #0078FF;
-	color: #FFFFFF;
-}
-.multiSelectBox .selected:hover {
-	background-color: #0068EF!important;
 }

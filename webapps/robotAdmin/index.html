@@ -1,73 +1,36 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>SVG Panning</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
-<!-- meta http-equiv="X-UA-Compatible" content="IE=9" /-->
-<!-- For intranet rendering only, remove when page is placed in production! -->
-<link rel="stylesheet" type="text/css" href="./css/common.css">
-<script type="text/javascript" src="./js/common.js"></script>
-<script type="text/javascript" src="./js/jquery-2.1.0.min.js"></script>
-<script>
-
-function init() {
-    g_RobotTrainerApp = new RobotTrainerApp();
-}
-
-var RobotTrainerApp = Class.create();
-RobotTrainerApp.prototype = {
-    initialize: function() {
-        this.AppHeaderDom = $("#appHeader");
-        this.AppLeftDom = $("#appLeft");
-
-        this.AppLeftDom.bind("click", BindAsEventListener(this, this.HandleAppLeftClick));
-        this.AppLeftDom.bind("dblclick", BindAsEventListener(this, this.HandleAppLeftDblclick));
-
-        // addEventHandler(this.AppLeftDom, "click", BindAsEventListener(this, this.HandleAppLeftClick));
-        // addEventHandler(this.AppLeftDom, "dblclick", BindAsEventListener(this, this.HandleAppLeftDblclick));
-        // addEventHandler(this.PageFrame, "mousemove", BindAsEventListener(this, this.HandlePageFrameMouseMove));
-    },
-    HandleAppLeftClick: function(e) {
-        var target = e.target;
-        if ( target.getAttribute("role")=="site" || target.parentNode.getAttribute("role")=="site" ) {
-            var h2 = (target.getAttribute("role")=="site")?target:((target.parentNode.getAttribute("role")=="site")?target.parentNode:null);
-            if (null==h2) return;
-            var ul = h2.parentNode.getElementsByTagName("ul")[0];
-            if ( !ul.getAttribute("style") ) {
-                h2.getElementsByTagName("i")[0].setAttribute("class", "folder");
-                ul.setAttribute("style", "display:none");
-            }
-            else {
-                h2.getElementsByTagName("i")[0].setAttribute("class", "unfolder");
-                ul.setAttribute("style", "");
-            }
-        }
-
-        if ( target.getAttribute("role")=="link" || target.parentNode.getAttribute("role")=="link" ) {
-            var li = (target.getAttribute("role")=="link")?target:((target.parentNode.getAttribute("role")=="link")?target.parentNode:null);
-            if (null==li) return;
-            var url =  li.getAttribute("linkurl");
-            $("#pageFrame iframe").attr("src", url);
-        }
-    },
-    HandleAppLeftDblclick: function(e) {
-
-    }
-}
-
-</script>
+    <title>RoboTrainer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+    <!-- meta http-equiv="X-UA-Compatible" content="IE=9" /-->
+    <!-- For intranet rendering only, remove when page is placed in production! -->
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <script type="text/javascript" src="./js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="./js/robotrainer.js"></script>
 </head>
-    
-<body onload="init();">
+
+<body>
     <div id="appHeader">
-        <div class="">
+        <div class="appLogo">
         </div>
+        <!-- <div class="scanBar">
+            <div class="input-group">
+              <input type="text" id="siteUrlInput" class="form-control" placeholder="">
+              <span class="input-group-btn">
+                <button class="btn btn-info" id="trainBtn" type="button">Train</button>
+              </span>
+            </div>
+        </div> -->
     </div>
     <div id="appLeft">
         <ul class="urlList">
             <li>
-                <h2 role="site"><i class="unfolder"></i>news.baidu.com</h2>
+                <div role="site"><i class="unfolder"></i>news.baidu.com</div>
                 <ul>
                     <li role="link" linkurl="http://qiuyuanjuner.baijia.baidu.com/article/262742"><i class="xmlFile"></i>银联牵手Apple pay: 三家混战，终归一统--百度百家</li>
                     <li role="link" linkurl="./Template/2.xml"><i class="xmlFile"></i>XML文件2</li>
@@ -76,10 +39,39 @@ RobotTrainerApp.prototype = {
             </li>
         </ul>
     </div>
+    <div id="pageAddress">
+        <div class="input-group">
+            <input type="text" id="pageUrlInput" class="form-control" placeholder="">
+            <span class="input-group-btn">
+                <button class="btn btn-info" id="trainBtn" type="button">Go</button>
+            </span>
+        </div>
+    </div>
     <div id="pageFrame">
         <iframe id="linkPageFrame" src=""></iframe>
     </div>
-    <div id="templateEditor">
+    <div id="defineInputs">
+        <form class="form-horizontal">
+            <div class="form-group form-group-sm">
+                <label class="control-label" for="targetLinksArea">Target Links Area</label>
+                <input type="text" class="form-control input-sm" id="targetLinksArea" placeholder="">
+            </div>
+            <button class="btn btn-default btn-sm" id="scanLinkList" type="button">Scan</button>
+        </form>
+        <hr>
+        <form class="form-horizontal">
+            <div class="form-group form-group-sm">
+                <label class="control-label" for="articleTitle">Title</label>
+                <input type="text" class="form-control input-sm" id="articleTitle" placeholder="">
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="control-label" for="articleContent">Content</label>
+                <input type="text" class="form-control input-sm" id="articleContent" placeholder="">
+            </div>
+            <button class="btn btn-default btn-sm" id="testBtn" type="button">Test</button>
+            <button class="btn btn-default btn-sm" id="learnBtn" type="button">Learn</button>
+        </form>
     </div>
 </body>
+
 </html>

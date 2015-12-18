@@ -16,13 +16,15 @@
     var RoboTrainerApp = Class.create();
     RoboTrainerApp.prototype = {
         Init: function() {
+            this.siteMap = {};
             this.AppHeaderDom = $("#appHeader");
             this.AppLeftDom = $("#appLeft");
 
-            this.AppLeftDom.bind("click", Bind(this, this.HandleAppLeftClick));
-            this.AppLeftDom.bind("dblclick", Bind(this, this.HandleAppLeftDblclick));
+            $("#appLeft").bind("click", Bind(this, this.HandleAppLeftClick));
+            $("#appLeft").bind("dblclick", Bind(this, this.HandleAppLeftDblclick));
 
-            $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddLinkList));
+            $("#goBtn").bind("click", Bind(this, this.HandleGoBtnClick));
+            $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddSite));
         },
         HandleAppLeftClick: function(e) {
             var target = e.target;
@@ -42,12 +44,28 @@
         },
         HandleAppLeftDblclick: function(e) {
             var target = e.target;
-            var li = (target.getAttribute("role")=="link")?target:null;
+            var role = target.getAttribute("role")
+            var li = (role=="link" || role=="site")?target:null;
             if (null==li) return;
-            var url =  li.getAttribute("linkurl");
+            var url = li.getAttribute("linkurl");
             this.openLink(url);
         },
-        AnalyseAndAddLinkList: function() {
+        HandleGoBtnClick: function(e) {
+            var url = $("#pageUrlInput").val();
+            this.openLink(url);
+        },
+        UpdateLinklist: function() {
+            $("#appLeft>ul").empty();
+            for ( var key in this.siteMap ) {
+                var site = this.siteMap[key];
+                var linksHTML = '';
+                $(site.linkList).each(function(ind, obj) {
+                    linksHTML += ' <li role="link" linkurl="'+obj.link+'"><i class="xmlFile"></i>'+obj.title+'</li>';
+                });
+                $('<li><div role="site" linkurl="'+site.siteURL+'"><i class="unfolder"></i>'+key+'</div><ul>'+linksHTML+'</ul></li>').appendTo($("#appLeft>ul"));
+            }
+        },
+        AnalyseAndAddSite: function() {
             var url = $("#pageUrlInput").val();
             var tar = $("#targetLinkArea").val();
 
@@ -55,13 +73,11 @@
 
             var handleAjaxSucc = function(data) {
                 console.log(data);
-
                 if ( !data.isSuccess ) {
                     //handleError(data);
                     return;
                 }
-
-                app.addLinkList(data.msg.linkList);
+                app.addSite(data.msg);
             }
 
             $.ajax({
@@ -76,9 +92,10 @@
                 }
             }).done(handleAjaxSucc);
         },
-        addLinkList: function(list) {
-            console.log(list);
-
+        addSite: function(msg) {
+            console.log(msg);
+            this.siteMap[msg.siteURL+' '+msg.targetArea] = msg;
+            this.UpdateLinklist();
         },
         openLink: function(url) {
             $("#pageUrlInput").val(url);
@@ -90,7 +107,7 @@
 
 })(window);
 
-var robotTrainer = null;
+var roboTrainer = null;
 $(function(){
-    robotTrainer = new RoboTrainerApp();
+    roboTrainer = new RoboTrainerApp();
 });

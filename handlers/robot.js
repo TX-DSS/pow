@@ -1,6 +1,5 @@
 var cheerio = require('cheerio');
-var superagent = require('superagent');
-
+var superagent = require('superagent-charset');
 
 exports.func = function(req, res, next){
 
@@ -8,6 +7,7 @@ exports.func = function(req, res, next){
         case 'analyseLinkArea':
             var msg = req.body.msg;
             superagent.get(msg.siteURL)
+                .charset('gbk')
                 .end(function(err, sres) {
                     // 常规的错误处理
                     if (err) {
@@ -27,11 +27,12 @@ exports.func = function(req, res, next){
                         });
                     });
 
-                    console.log(items);
-
+                    //console.log(items);
                     res.json({
                         isSuccess: true,
                         msg: {
+                            siteURL: msg.siteURL,
+                            targetArea: msg.targetArea,
                             linkList: items
                         }
                     });

@@ -68,6 +68,7 @@
         AnalyseAndAddSite: function() {
             var url = $("#pageUrlInput").val();
             var tar = $("#targetLinkArea").val();
+            var isGBK = $("#isGBKCharset").is(":checked");
 
             var app = this;
 
@@ -87,7 +88,8 @@
                     opt: "analyseLinkArea",
                     msg: {
                         siteURL: url,
-                        targetArea: tar
+                        targetArea: tar,
+                        isGBKCharset: isGBK
                     }
                 }
             }).done(handleAjaxSucc);

@@ -91,6 +91,7 @@ i.xmlFile {
 	bottom: 0;
 	height: auto;
 	border-right: 1px solid #D0D0D0;
+	overflow-y: auto;
 }
 #pageAddress {
 	position: absolute;

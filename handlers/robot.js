@@ -6,8 +6,9 @@ exports.func = function(req, res, next){
     switch(req.body.opt){
         case 'analyseLinkArea':
             var msg = req.body.msg;
+            var char = msg.isGBKCharset=="true"?"gbk":"UTF-8";
             superagent.get(msg.siteURL)
-                .charset('gbk')
+                .charset(char)
                 .end(function(err, sres) {
                     // 常规的错误处理
                     if (err) {

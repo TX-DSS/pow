@@ -2963,8 +2963,8 @@ select[multiple].input-lg {
 .form-horizontal .checkbox,
 .form-horizontal .radio-inline,
 .form-horizontal .checkbox-inline {
-  margin-top: 0;
-  margin-bottom: 0;
+  1margin-top: 0;
+  1margin-bottom: 0;
   padding-top: 7px;
 }
 .form-horizontal .radio,

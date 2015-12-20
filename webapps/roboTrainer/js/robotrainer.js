@@ -25,6 +25,10 @@
 
             $("#goBtn").bind("click", Bind(this, this.HandleGoBtnClick));
             $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddSite));
+
+            document.oncontextmenu=function(event) {
+                event.preventDefault ? event.preventDefault() : event.returnValue=false;
+            }
         },
         HandleAppLeftClick: function(e) {
             var target = e.target;
@@ -45,7 +49,7 @@
         HandleAppLeftDblclick: function(e) {
             var target = e.target;
             var role = target.getAttribute("role")
-            var li = (role=="link" || role=="site")?target:null;
+            var li = (role=="link")?target:null;
             if (null==li) return;
             var url = li.getAttribute("linkurl");
             this.openLink(url);

@@ -27,8 +27,10 @@ body {
 	cursor: default;
 	border-bottom: 1px solid #E0E0E0;
 }
-.urlList>li>h2 {
-	font-size: 14px;
+.urlList>li>div {
+	white-space: nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
 }
 .urlList>li>ul>li {
 	padding-left: 32px;

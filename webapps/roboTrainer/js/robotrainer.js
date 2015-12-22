@@ -18,7 +18,7 @@
             opacity: 40,
             overlayCss: {backgroundColor:"#000"},
             containerCss:{
-                backgroundColor: "#333", 
+                backgroundColor: "#333",
                 height: 36,
                 padding: 8,
                 width: 160,
@@ -133,7 +133,7 @@
                     //handleError(data);
                     return;
                 }
-                //app.addSite(data.msg);
+                app.pagePreview(data.msg);
             }
 
             RobotAjaxReq({
@@ -146,6 +146,25 @@
                     contentArea: content
                 }
             }, handleAjaxSucc);
+        },
+        pagePreview: function(data) {
+
+            $.modal($('#pagePreviewModal').html(), {
+                opacity: 40,
+                overlayCss: {backgroundColor:"#000"},
+                containerCss:{
+                    backgroundColor: "#fff",
+                    top: "10%",
+                    left: "25%",
+                    height: "80%",
+                    padding: "0 18px",
+                    width: "50%"
+                },
+                onShow: function() {
+                    $("#previewTitle").html(data.title);
+                    $("#previewContent").html(data.originContent);
+                }
+            });
         },
         addSite: function(msg) {
             console.log(msg);

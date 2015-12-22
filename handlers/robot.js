@@ -3,12 +3,14 @@ var superagent = require('superagent-charset');
 
 exports.func = function(req, res, next){
 
-    switch(req.body.opt){
+    var opt = req.body.opt;
+    var msg = req.body.msg;
+
+    switch(opt){
         case 'analyseLinkArea':
-            var msg = req.body.msg;
-            var char = msg.isGBKCharset=="true"?"gbk":"UTF-8";
+            var charset = msg.isGBKCharset=="true"?"gbk":"utf-8";
             superagent.get(msg.siteURL)
-                .charset(char)
+                .charset(charset)
                 .end(function(err, sres) {
                     // 常规的错误处理
                     if (err) {
@@ -40,8 +42,41 @@ exports.func = function(req, res, next){
 
                 });
             break;
-        default:
+        case 'analysePage':
+            var charset = msg.isGBKCharset=="true"?"gbk":"utf-8";
+            superagent.get(msg.pageURL)
+                .charset(charset)
+                .end(function(err, sres) {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    var $ = cheerio.load(sres.text);
+
+                    var title = msg.titleArea?$(msg.titleArea).text():"";
+                    var author = msg.authorArea?$(msg.authorArea).text():"";
+                    var time = msg.timeArea?$(msg.timeArea).text():"";
+                    var content = msg.contentArea?$(msg.contentArea).html():"";
+
+                    //console.log(items);
+                    res.json({
+                        isSuccess: true,
+                        msg: {
+                            sourceURL: msg.pageURL,
+                            title: title,
+                            author: author,
+                            publishTime: time,
+                            originContent: content
+                        }
+                    });
+
+                });
             break;
+        default:
+            res.json({
+                isSuccess: false,
+                msg: "Error Input"
+            });
     }
 
 };

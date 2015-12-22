@@ -13,6 +13,29 @@
         }
     }
 
+    var RobotAjaxReq = function(reqMsg, func) {
+        $.modal('<div>Please wait...</div>', {
+            opacity: 40,
+            overlayCss: {backgroundColor:"#000"},
+            containerCss:{
+                backgroundColor: "#333", 
+                height: 36,
+                padding: 8,
+                width: 160,
+                color: "#fff",
+                textAlign: 'center'
+            }
+        });
+        $.ajax({
+            method: "POST",
+            url: "http://robot.pow.com:3000",
+            data: reqMsg
+        }).done(function(data) {
+            $.modal.close();
+            func(data);
+        })
+    }
+
     var RoboTrainerApp = Class.create();
     RoboTrainerApp.prototype = {
         Init: function() {
@@ -25,6 +48,7 @@
 
             $("#goBtn").bind("click", Bind(this, this.HandleGoBtnClick));
             $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddSite));
+            $("#testBtn").bind("click", Bind(this, this.TestPage));
 
             document.oncontextmenu=function(event) {
                 event.preventDefault ? event.preventDefault() : event.returnValue=false;
@@ -85,18 +109,43 @@
                 app.addSite(data.msg);
             }
 
-            $.ajax({
-                method: "POST",
-                url: "http://robot.pow.com:3000",
-                data: {
-                    opt: "analyseLinkArea",
-                    msg: {
-                        siteURL: url,
-                        targetArea: tar,
-                        isGBKCharset: isGBK
-                    }
+            RobotAjaxReq({
+                opt: "analyseLinkArea",
+                msg: {
+                    siteURL: url,
+                    targetArea: tar,
+                    isGBKCharset: isGBK
                 }
-            }).done(handleAjaxSucc);
+            }, handleAjaxSucc);
+        },
+        TestPage: function() {
+            var url = $("#pageUrlInput").val();
+            var title = $("#titleArea").val();
+            var author = $("#authorArea").val();
+            var time = $("#timeArea").val();
+            var content = $("#contentArea").val();
+
+            var app = this;
+
+            var handleAjaxSucc = function(data) {
+                console.log(data);
+                if ( !data.isSuccess ) {
+                    //handleError(data);
+                    return;
+                }
+                //app.addSite(data.msg);
+            }
+
+            RobotAjaxReq({
+                opt: "analysePage",
+                msg: {
+                    pageURL: url,
+                    titleArea: title,
+                    authorArea: author,
+                    timeArea: time,
+                    contentArea: content
+                }
+            }, handleAjaxSucc);
         },
         addSite: function(msg) {
             console.log(msg);

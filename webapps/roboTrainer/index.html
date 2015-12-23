@@ -7,11 +7,12 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <!-- meta http-equiv="X-UA-Compatible" content="IE=9" /-->
     <!-- For intranet rendering only, remove when page is placed in production! -->
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap-theme.css">
     <link rel="stylesheet" type="text/css" href="./css/common.css">
-    <script type="text/javascript" src="./js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="/vendor/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/vendor/js/jquery.simplemodal.js"></script>
+    <script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="./js/robotrainer.js"></script>
 </head>
 
@@ -19,14 +20,6 @@
     <div id="appHeader">
         <div class="appLogo">
         </div>
-        <!-- <div class="scanBar">
-            <div class="input-group">
-              <input type="text" id="siteUrlInput" class="form-control" placeholder="">
-              <span class="input-group-btn">
-                <button class="btn btn-info" id="trainBtn" type="button">Train</button>
-              </span>
-            </div>
-        </div> -->
     </div>
     <div id="appLeft">
         <ul class="urlList">
@@ -42,7 +35,7 @@
         <div class="input-group">
             <input type="text" id="pageUrlInput" class="form-control" placeholder="">
             <span class="input-group-btn">
-                <button class="btn btn-info" id="goBtn" type="button">Go</button>
+                <button class="btn btn-primary" id="goBtn" type="button">Go</button>
             </span>
         </div>
     </div>
@@ -56,9 +49,9 @@
                 <input type="text" class="form-control input-sm" id="targetLinkArea" placeholder="">
             </div>
             <div class="checkbox">
-              <label>
-                <input type="checkbox" id="isGBKCharset"> gbk charset
-              </label>
+                <label>
+                    <input type="checkbox" id="isGBKCharset">gbk charset
+                </label>
             </div>
             <button class="btn btn-default btn-sm" id="analyseAndAddBtn" type="button">Analyse & Add</button>
         </form>
@@ -81,16 +74,26 @@
                 <input type="text" class="form-control input-sm" id="contentArea" placeholder="">
             </div>
             <button class="btn btn-default btn-sm" id="testBtn" type="button">Test</button>
+            <button class="btn btn-default btn-sm" id="resetBtn" type="button">Test</button>
         </form>
     </div>
     <script type="text/html" id="pagePreviewModal">
-        <h2 id="previewTitle">Title</h2>
-        <div class="form-group">
-            来源：<span id="previewAuthor">123</span> 发布时间：<span id="previewTime">321</span>
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <h3 id="previewTitle">Title</h3>
+                    <div>
+                        <p>来源：<span id="previewAuthor"></span> 发布时间：<span id="previewTime"></span></p>
+                    </div>
+                    <div id="previewContent" style="height:360px;overflow-y:auto">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm">Learn</button>
+                <button type="button" class="btn btn-default btn-sm">Close</button>
+            </div>
         </div>
-        <div id="previewContent" class="form-group" style="">
-        </div>
-        <button class="btn btn-default btn-sm" id="learnBtn" type="button">Learn</button>
     </script>
 </body>
 

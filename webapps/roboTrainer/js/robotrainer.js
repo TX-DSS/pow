@@ -154,14 +154,15 @@
                 overlayCss: {backgroundColor:"#000"},
                 containerCss:{
                     backgroundColor: "#fff",
-                    top: "10%",
                     left: "25%",
-                    height: "80%",
-                    padding: "0 18px",
+                    height: "auto",
                     width: "50%"
                 },
+                overlayClose: true,
                 onShow: function() {
                     $("#previewTitle").html(data.title);
+                    $("#previewAuthor").html(data.author);
+                    $("#previewTime").html(data.publishTime);
                     $("#previewContent").html(data.originContent);
                 }
             });

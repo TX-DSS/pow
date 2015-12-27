@@ -50,6 +50,8 @@
             $("#analyseAndAddBtn").bind("click", Bind(this, this.AnalyseAndAddSite));
             $("#testBtn").bind("click", Bind(this, this.TestPage));
 
+            this._learnPageRule = Bind(this, this.learnPageRule);
+
             document.oncontextmenu=function(event) {
                 event.preventDefault ? event.preventDefault() : event.returnValue=false;
             }
@@ -110,8 +112,8 @@
             }
 
             RobotAjaxReq({
-                opt: "analyseLinkArea",
-                msg: {
+                action: "analyseLinkArea",
+                message: {
                     siteURL: url,
                     targetArea: tar,
                     isGBKCharset: isGBK
@@ -137,8 +139,8 @@
             }
 
             RobotAjaxReq({
-                opt: "analysePage",
-                msg: {
+                action: "analysePage",
+                message: {
                     pageURL: url,
                     titleArea: title,
                     authorArea: author,
@@ -148,6 +150,8 @@
             }, handleAjaxSucc);
         },
         pagePreview: function(data) {
+
+            var app = this;
 
             $.modal($('#pagePreviewModal').html(), {
                 opacity: 40,
@@ -164,8 +168,42 @@
                     $("#previewAuthor").html(data.author);
                     $("#previewTime").html(data.publishTime);
                     $("#previewContent").html(data.originContent);
+                    $("#learnBtn").bind("click", app._learnPageRule);
+                    $("#closePreViewBtn").bind("click", function(){$.modal.close();});
                 }
             });
+        },
+        learnPageRule: function() {
+            var url = $("#pageUrlInput").val();
+            var title = $("#titleArea").val();
+            var author = $("#authorArea").val();
+            var time = $("#timeArea").val();
+            var content = $("#contentArea").val();
+
+            var app = this;
+
+            var handleAjaxSucc = function(data) {
+                console.log(data);
+                if ( !data.isSuccess ) {
+                    //handleError(data);
+                    return;
+                }
+                alert('ruleId:'+data.msg.ruleId);
+                //app.addSite(data.msg);
+            }
+
+            RobotAjaxReq({
+                action: "learnPageRule",
+                message: {
+                    baseURL: url,
+                    titleArea: title,
+                    authorArea: author,
+                    publishTimeArea: time,
+                    contentArea: content,
+                    category: ''
+                }
+            }, handleAjaxSucc);
+
         },
         addSite: function(msg) {
             console.log(msg);

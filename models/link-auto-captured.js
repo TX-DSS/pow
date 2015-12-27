@@ -1,16 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 //var autoIncrement = require('mongoose-auto-increment');
+//autoIncrement.initialize(mongoose);
 
-autoIncrement.initialize(mongoose);
-
-var linkAutoCaptureSchema = new Schema({
+var linkAutoCapturedSchema = new Schema({
     linkURL: { type: String, index: true },
     linkTitle: String,
     sourceSite: String,
-    ruleId: String,
+    ruleId: [String],
     state: String
 });
 
-var LinkAutoCapture = mongoose.model('LinkAutoCapture', linkAutoCaptureSchema);
-module.exports = LinkAutoRobot;
+var LinkAutoCaptured = mongoose.model('LinkAutoCaptured', linkAutoCapturedSchema);
+module.exports = LinkAutoCaptured;

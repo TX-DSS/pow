@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 //var autoIncrement = require('mongoose-auto-increment');
-
-autoIncrement.initialize(mongoose);
+//autoIncrement.initialize(mongoose);
 
 var siteScheduleSchema = new Schema({
     siteURL: { type: String, index: true },

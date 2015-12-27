@@ -40,7 +40,7 @@
     "node-schedule": "^0.2.9",
     "nodemailer": "^0.6.5",
     "phantomjs": "^1.9.17",
-    "q": "^1.0.1",
+    "q": "^1.4.1",
     "session-mongoose": "^0.4.1",
     "superagent": "^1.5.0",
     "superagent-charset": "^0.1.1",

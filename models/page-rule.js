@@ -5,12 +5,12 @@ var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(mongoose);
 
 var pageRuleSchema = new Schema({
-    ruleId: { type: String, index: true, unique: true },
-    baseURL: { type: String, index: true },
-    titleArea: String,
+    ruleId: { type: String, index: true, unique: true, required: true },
+    baseURL: { type: String, index: true, required: true },
+    titleArea: { type: String, required: true },
     authorArea: String,
     publishTimeArea: String,
-    contentArea: String,
+    contentArea: { type: String, required: true },
     category: String
 });
 pageRuleSchema.plugin(autoIncrement.plugin, {

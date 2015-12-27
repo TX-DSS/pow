@@ -1,33 +1,55 @@
 var cheerio = require('cheerio');
 var superagent = require('superagent-charset');
+var PageRule = require('../models/page-rule.js');
+var SiteSchedule = require('../models/site-schedule.js');
+var LinkAutoCaptured = require('../models/link-auto-captured.js');
+
+function handleError(err, res) {
+    res.json({
+        isSuccess: false,
+        err: err
+    });
+}
 
 exports.func = function(req, res, next){
 
-    var opt = req.body.opt;
-    var msg = req.body.msg;
+    var act = req.body.action;
+    var msg = req.body.message;
 
-    switch(opt){
+    switch(act){
         case 'analyseLinkArea':
             var charset = msg.isGBKCharset=="true"?"gbk":"utf-8";
             superagent.get(msg.siteURL)
                 .charset(charset)
                 .end(function(err, sres) {
-                    // 常规的错误处理
-                    if (err) {
-                        return next(err);
-                    }
-                    // sres.text 里面存储着网页的 html 内容，将它传给 cheerio.load 之后
-                    // 就可以得到一个实现了 jquery 接口的变量，我们习惯性地将它命名为 `$`
-                    // 剩下就都是 jquery 的内容了
+                    if (err) return handleError(err, res);
+
                     var $ = cheerio.load(sres.text);
                     var items = [];
                     $(''+msg.targetArea+' a').each(function(index, element) {
-                        var $element = $(element);
+                        // var $element = $(element);
+                        // var url = $element.attr('href');
+                        // var baseurl = url.split('://')[1].split('/')[0];
+                        //
+                        // // 获取链接对应的规则
+                        // PageRule.find({
+                        //     baseURL: eval('/'+baseurl+'/')
+                        // }).
+                        // exec(function(err, result){
+                        //     if (err) return handleError(err, res);
+                        //
+                        // });
+
                         items.push({
                             title: $element.text(),
                             link: $element.attr('href'),
                             site: msg.siteURL
                         });
+                        // var linkAutoCaptured = new LinkAutoCaptured({
+                        //     linkURL: items[index].link,
+                        //     linkTitle: item[index].title,
+                        //     sourceSite: msg.siteURL
+                        // });
                     });
 
                     //console.log(items);
@@ -72,6 +94,37 @@ exports.func = function(req, res, next){
 
                 });
             break;
+        case 'learnPageRule':
+            var pageRule = new PageRule({
+                baseURL: msg.baseURL,
+                titleArea: msg.titleArea,
+                authorArea: msg.authorArea,
+                publishTimeArea: msg.publishTimeArea,
+                contentArea: msg.contentArea,
+                category: msg.category
+            });
+            pageRule.save(function(err, result){
+                if(err) return handleError(err, res);
+                res.json({
+                    isSuccess: true,
+                    msg: {
+                        ruleId: result.ruleId
+                    }
+                });
+            });
+            break;
+        case 'queryCapturedLinks':
+            var query = LinkAutoCaptured.find();
+            if ( 'unlearned' == msg.opt ) {
+                query.where('ruleId').equals([]);
+            }
+            query.exec(function(err, result){
+                if (err) return handleError(err, res);
+                res.json({
+                    isSuccess: true,
+                    msg: result
+                });
+            });
         default:
             res.json({
                 isSuccess: false,

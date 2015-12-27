@@ -61,7 +61,7 @@ app.use(require('body-parser')());
 var mongoose = require('mongoose');
 var options = {
     server: {
-       socketOptions: { keepAlive: 1 } 
+       socketOptions: { keepAlive: 1 }
     }
 };
 mongoose.connect(credentials.mongo.connectionString, options);

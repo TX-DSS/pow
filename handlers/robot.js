@@ -3,12 +3,45 @@ var superagent = require('superagent-charset');
 var PageRule = require('../models/page-rule.js');
 var SiteSchedule = require('../models/site-schedule.js');
 var LinkAutoCaptured = require('../models/link-auto-captured.js');
+var Q = require('q');
 
 function handleError(err, res) {
     res.json({
         isSuccess: false,
         err: err
     });
+}
+
+function analysePage(msg) {
+    var deferred = Q.defer();
+
+    var charset = msg.isGBKCharset=="true"?"gbk":"utf-8";
+    superagent.get(msg.pageURL)
+      .charset(charset)
+      .end(function(err, sres) {
+          if (err) {
+              deferred.reject(err);
+          } else {
+
+            var $ = cheerio.load(sres.text);
+
+            var title = msg.titleArea?$(msg.titleArea).text():"";
+            var author = msg.authorArea?$(msg.authorArea).text():"";
+            var time = msg.timeArea?$(msg.timeArea).text():"";
+            var content = msg.contentArea?$(msg.contentArea).html():"";
+
+            var obj = {
+                sourceURL: msg.pageURL,
+                title: title,
+                author: author,
+                publishTime: time,
+                originContent: content
+            }
+            deferred.resolve(obj);
+          }
+      });
+
+    return deferred.promise // the promise is returned
 }
 
 exports.func = function(req, res, next){
@@ -65,34 +98,46 @@ exports.func = function(req, res, next){
                 });
             break;
         case 'analysePage':
-            var charset = msg.isGBKCharset=="true"?"gbk":"utf-8";
-            superagent.get(msg.pageURL)
-                .charset(charset)
-                .end(function(err, sres) {
-                    if (err) {
-                        return next(err);
-                    }
-
-                    var $ = cheerio.load(sres.text);
-
-                    var title = msg.titleArea?$(msg.titleArea).text():"";
-                    var author = msg.authorArea?$(msg.authorArea).text():"";
-                    var time = msg.timeArea?$(msg.timeArea).text():"";
-                    var content = msg.contentArea?$(msg.contentArea).html():"";
-
-                    //console.log(items);
-                    res.json({
-                        isSuccess: true,
-                        msg: {
-                            sourceURL: msg.pageURL,
-                            title: title,
-                            author: author,
-                            publishTime: time,
-                            originContent: content
-                        }
-                    });
-
-                });
+            analysePage(msg)
+              .then(function(msg){
+                  res.json({
+                      isSuccess: true,
+                      msg: msg
+                  });
+              })
+              .catch(function(err) {
+                  res.json({
+                      isSuccess: false,
+                      msg: err
+                  });
+              })
+            // superagent.get(msg.pageURL)
+            //     .charset(charset)
+            //     .end(function(err, sres) {
+            //         if (err) {
+            //             return next(err);
+            //         }
+            //
+            //         var $ = cheerio.load(sres.text);
+            //
+            //         var title = msg.titleArea?$(msg.titleArea).text():"";
+            //         var author = msg.authorArea?$(msg.authorArea).text():"";
+            //         var time = msg.timeArea?$(msg.timeArea).text():"";
+            //         var content = msg.contentArea?$(msg.contentArea).html():"";
+            //
+            //         //console.log(items);
+            //         res.json({
+            //             isSuccess: true,
+            //             msg: {
+            //                 sourceURL: msg.pageURL,
+            //                 title: title,
+            //                 author: author,
+            //                 publishTime: time,
+            //                 originContent: content
+            //             }
+            //         });
+            //
+            //     });
             break;
         case 'learnPageRule':
             var pageRule = new PageRule({

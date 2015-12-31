@@ -85,15 +85,25 @@
             this.openLink(url);
         },
         UpdateLinklist: function() {
-            $("#appLeft>ul").empty();
-            for ( var key in this.siteMap ) {
-                var site = this.siteMap[key];
-                var linksHTML = '';
-                $(site.linkList).each(function(ind, obj) {
-                    linksHTML += ' <li role="link" linkurl="'+obj.link+'"><i class="xmlFile"></i>'+obj.title+'</li>';
-                });
-                $('<li><div role="site" linkurl="'+site.siteURL+'"><i class="unfolder"></i>'+key+'</div><ul>'+linksHTML+'</ul></li>').appendTo($("#appLeft>ul"));
-            }
+            RobotAjaxReq({
+                action: "queryCapturedLinks",
+                message: {
+                    opt: "all"
+                }
+            }, function(data) {
+                // 组装siteMap
+                console.log(data);
+
+                // $("#appLeft>ul").empty();
+                // for ( var key in this.siteMap ) {
+                //     var site = this.siteMap[key];
+                //     var linksHTML = '';
+                //     $(site.linkList).each(function(ind, obj) {
+                //         linksHTML += ' <li role="link" linkurl="'+obj.link+'"><i class="xmlFile"></i>'+obj.title+'</li>';
+                //     });
+                //     $('<li><div role="site" linkurl="'+site.siteURL+'"><i class="unfolder"></i>'+key+'</div><ul>'+linksHTML+'</ul></li>').appendTo($("#appLeft>ul"));
+                // }
+            });
         },
         AnalyseAndAddSite: function() {
             var url = $("#pageUrlInput").val();
@@ -103,12 +113,11 @@
             var app = this;
 
             var handleAjaxSucc = function(data) {
-                console.log(data);
                 if ( !data.isSuccess ) {
-                    //handleError(data);
+                    console.log(data);
                     return;
                 }
-                app.addSite(data.msg);
+                app.UpdateLinklist();
             }
 
             RobotAjaxReq({
@@ -189,7 +198,6 @@
                     return;
                 }
                 alert('ruleId:'+data.msg.ruleId);
-                //app.addSite(data.msg);
             }
 
             RobotAjaxReq({
@@ -204,11 +212,6 @@
                 }
             }, handleAjaxSucc);
 
-        },
-        addSite: function(msg) {
-            console.log(msg);
-            this.siteMap[msg.siteURL+' '+msg.targetArea] = msg;
-            this.UpdateLinklist();
         },
         openLink: function(url) {
             $("#pageUrlInput").val(url);

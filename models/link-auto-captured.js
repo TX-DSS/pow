@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 //autoIncrement.initialize(mongoose);
 
 var linkAutoCapturedSchema = new Schema({
-    linkURL: { type: String, index: true },
+    linkURL: { type: String, index: true, unique: true },
     linkTitle: String,
     sourceSite: String,
     ruleId: [String],

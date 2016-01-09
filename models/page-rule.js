@@ -11,7 +11,8 @@ var pageRuleSchema = new Schema({
     authorArea: String,
     publishTimeArea: String,
     contentArea: { type: String, required: true },
-    category: String
+    category: String,
+    demoPageURL: String
 });
 pageRuleSchema.plugin(autoIncrement.plugin, {
     model: 'PageRule',

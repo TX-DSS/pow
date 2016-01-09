@@ -210,6 +210,7 @@ exports.func = function(req, res, next) {
                     });
                 }
             });
+            break;
         default:
             res.json({
                 isSuccess: false,

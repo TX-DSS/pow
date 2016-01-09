@@ -55,6 +55,8 @@
             document.oncontextmenu=function(event) {
                 event.preventDefault ? event.preventDefault() : event.returnValue=false;
             }
+
+            this.UpdateLinklist();
         },
         HandleAppLeftClick: function(e) {
             var target = e.target;
@@ -85,6 +87,8 @@
             this.openLink(url);
         },
         UpdateLinklist: function() {
+            this.siteMap = {};
+            var app = this;
             RobotAjaxReq({
                 action: "queryCapturedLinks",
                 message: {
@@ -92,17 +96,31 @@
                 }
             }, function(data) {
                 // 组装siteMap
-                console.log(data);
+                if ( !data.isSuccess ) {
+                    console.log(data);
+                    return;
+                }
 
-                // $("#appLeft>ul").empty();
-                // for ( var key in this.siteMap ) {
-                //     var site = this.siteMap[key];
-                //     var linksHTML = '';
-                //     $(site.linkList).each(function(ind, obj) {
-                //         linksHTML += ' <li role="link" linkurl="'+obj.link+'"><i class="xmlFile"></i>'+obj.title+'</li>';
-                //     });
-                //     $('<li><div role="site" linkurl="'+site.siteURL+'"><i class="unfolder"></i>'+key+'</div><ul>'+linksHTML+'</ul></li>').appendTo($("#appLeft>ul"));
-                // }
+                var links = data.msg;
+                for (var i=0,l=links.length; i<l; i++) {
+                    if ( !app.siteMap[links[i].sourceSite] ) {
+                        app.siteMap[links[i].sourceSite] = [];
+                    }
+                    app.siteMap[links[i].sourceSite].push({
+                        title: links[i].linkTitle,
+                        url: links[i].linkURL
+                    })
+                }
+
+                $("#appLeft>ul").empty();
+                for ( var key in app.siteMap ) {
+                    var linkList = app.siteMap[key];
+                    var linksHTML = '';
+                    $(linkList).each(function(ind, obj) {
+                        linksHTML += ' <li role="link" linkurl="'+obj.url+'"><i class="xmlFile"></i>'+obj.title+'</li>';
+                    });
+                    $('<li><div role="site" linkurl="'+key+'"><i class="unfolder"></i>'+key+'</div><ul>'+linksHTML+'</ul></li>').appendTo($("#appLeft>ul"));
+                }
             });
         },
         AnalyseAndAddSite: function() {

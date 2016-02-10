@@ -8,7 +8,7 @@ var linkAutoCapturedSchema = new Schema({
     linkTitle: String,
     sourceSite: String,
     ruleId: [String],
-    state: String
+    status: String
 });
 
 var LinkAutoCaptured = mongoose.model('LinkAutoCaptured', linkAutoCapturedSchema);

@@ -8,15 +8,42 @@ function sha1(str) {
     sha1Gen.update(str);
     return sha1Gen.digest("hex");
 }
+function authentication(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+}
 
 exports.home = function(req, res){
+    authentication(req, res);
     res.render('home');
 };
 
+exports.login = function(req, res){
+    res.render('login');
+};
+exports.logout = function(req, res){
+    req.session.user = null;
+    res.redirect('/');
+};
+exports.checkUser = function(req, res){
+    var user = {
+        username: 'admin',
+        password: '123456'
+    }
+    if (req.body.username === user.username && req.body.password === user.password) {
+        req.session.user = user;
+        res.redirect('/');
+    } else {
+        req.session.error='用户名或密码不正确';
+        res.redirect('/login');
+    }
+};
+
 exports.about = function(req, res){
-    res.render('about', { 
+    res.render('about', {
         //fortune: fortune.getFortune(),
-        pageTestScript: '/qa/tests-about.js' 
+        pageTestScript: '/qa/tests-about.js'
     } );
 };
 

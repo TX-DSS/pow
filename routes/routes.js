@@ -10,6 +10,8 @@ module.exports = function(app){
     app.get('/logout', main.logout);
     app.get('/checkSignature', cors(), main.checkSignature);
 
+    app.get('/workdiary', main.workdiary);
+
     app.post('/login', main.checkUser);
     app.post('/checkSignature', cors(), main.handleMsg);
 };

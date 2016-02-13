@@ -19,6 +19,11 @@ exports.home = function(req, res){
     res.render('home');
 };
 
+exports.workdiary = function(req, res){
+    authentication(req, res);
+    res.render('workdiary_home', {layout:'workdiary'});
+};
+
 exports.login = function(req, res){
     res.render('login');
 };
@@ -28,12 +33,13 @@ exports.logout = function(req, res){
 };
 exports.checkUser = function(req, res){
     var user = {
-        username: 'admin',
+        acctno: 'admin',
+        name: '唐睿德',
         password: '123456'
     }
-    if (req.body.username === user.username && req.body.password === user.password) {
+    if (req.body.acctno === user.acctno && req.body.password === user.password) {
         req.session.user = user;
-        res.redirect('/');
+        res.redirect('/workdiary');
     } else {
         req.session.error='用户名或密码不正确';
         res.redirect('/login');

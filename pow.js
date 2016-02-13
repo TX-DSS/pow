@@ -66,6 +66,11 @@ var options = {
 };
 mongoose.connect(credentials.mongo.connectionString, options);
 
+app.use(function(req, res, next) {
+    if (!res.locals.userInfo) res.locals.userInfo = {};
+    res.locals.userInfo = req.session.user;
+    next();
+});
 
 var vhost = require('vhost');
 // create "admin" subdomain...this should appear

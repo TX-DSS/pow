@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 //autoIncrement.initialize(mongoose);
 
 var userSchema = new Schema({
-    name: { type: String, index: true, unique: true, required: true },
+    acctno: { type: String, index: true, unique: true, required: true },
+    name: { type: String, index: true, required: true },
     password: { type: String, required: true },
     type: String,
     status: String
